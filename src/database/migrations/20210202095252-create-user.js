@@ -7,7 +7,10 @@ export default {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      firstName: {
+        type: Sequelize.STRING,
+      },
+      lastName: {
         type: Sequelize.STRING,
       },
       email: {
@@ -15,29 +18,21 @@ export default {
         unique: true,
         type: Sequelize.STRING,
       },
-      phone: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
       password: {
         type: Sequelize.STRING,
       },
-      status: {
+      is_active: {
         type: Sequelize.STRING,
       },
-      last_login_at: {
-        type: Sequelize.DATE,
-      },
-      last_ip_address: {
-        type: Sequelize.STRING,
-      },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: DataTypes.NOW,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
+        defaultValue: DataTypes.NOW,
       },
     });
   },

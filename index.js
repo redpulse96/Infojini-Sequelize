@@ -1,10 +1,12 @@
 import express from 'express';
 import expressValidation from 'express-validation';
+import httpStatus from 'http-status';
 import dotenv from 'dotenv';
+import config from './src/config/config.js';
 import routes from './src/routes/index.js';
 import APIError from './src/apiError.js';
 
-dotenv.config();
+dotenv.config('.env');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -20,12 +22,18 @@ app.use(baseUrl, routes);
 app.use((err, req, res, next) => {
   if (err instanceof expressValidation.ValidationError) {
     // validation error contains errors which is an array of error each containing message[]
-    const unifiedErrorMessage = err.errors.map((error) => error.messages.join('. ')).join(' and ');
-    const error = new APIError(unifiedErrorMessage, err.status, true);
+    let unifiedErrorMessage, error;
+    if (Array.isArray(err) && err.length) {
+      unifiedErrorMessage = err.errors.map((error) => error.messages.join('. ')).join(' and ');
+      error = new APIError(unifiedErrorMessage, err.status, true);
+    } else {
+      unifiedErrorMessage = `${err.error} and ${err.message}`;
+      error = new APIError(unifiedErrorMessage, err.statusCode, true);
+    }
     return next(error);
   }
   if (!(err instanceof APIError)) {
-    const apiError = new APIError(err.message, err.status, err.isPublic);
+    const apiError = new APIError(err.message, err.status || err.statusCode, err.isPublic);
     return next(apiError);
   }
   return next(err);

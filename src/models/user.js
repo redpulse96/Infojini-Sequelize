@@ -9,9 +9,9 @@ export default (sequelize, DataTypes) => {
       // hide protected fields
       const attributes = { ...this.get() };
       // eslint-disable-next-line no-restricted-syntax
-      for (const a of PROTECTED_ATTRIBUTES) {
-        delete attributes[a];
-      }
+      // for (const a of PROTECTED_ATTRIBUTES) {
+      //   delete attributes[a];
+      // }
       return attributes;
     }
     /**
@@ -36,8 +36,9 @@ export default (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      role_id: DataTypes.STRING,
+      role_id: DataTypes.INTEGER,
       firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
         allowNull: {
@@ -57,20 +58,11 @@ export default (sequelize, DataTypes) => {
       },
       password: DataTypes.STRING,
       is_active: DataTypes.BOOLEAN,
-      created_at: {
-        type: DataTypes.TIME,
-        defaultValue: DataTypes.NOW,
-        allowNull: true,
-      },
-      updated_at: {
-        type: DataTypes.TIME,
-        defaultValue: DataTypes.NOW,
-        allowNull: true,
-      },
     },
     {
       sequelize,
       modelName: 'User',
+      timestamps: true,
     }
   );
   return User;

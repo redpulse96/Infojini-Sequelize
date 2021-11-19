@@ -4,6 +4,11 @@ const { Model } = sequelize;
 
 export default (sequelize, DataTypes) => {
   class Role extends Model {
+    toJSON() {
+      // hide protected fields
+      const attributes = { ...this.get() };
+      return attributes;
+    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -26,18 +31,11 @@ export default (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        values: ['admin', 'student', 'superAdmin'],
+      },
       is_active: DataTypes.BOOLEAN,
-      created_at: {
-        type: DataTypes.TIME,
-        defaultValue: DataTypes.NOW,
-        allowNull: true,
-      },
-      updated_at: {
-        type: DataTypes.TIME,
-        defaultValue: DataTypes.NOW,
-        allowNull: true,
-      },
     },
     {
       sequelize,

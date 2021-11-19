@@ -11,7 +11,7 @@ const dirname = import.meta.url.substring(
 const basename = path.basename(filename);
 const env = process.env.NODE_ENV || 'development';
 const config = enVariables[env];
-const db = {};
+class db {}
 
 let sequelize;
 if (config.use_env_variable) {
@@ -30,11 +30,13 @@ fs.readdirSync(dirname)
     });
   });
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+setTimeout(() => {
+  Object.keys(db).forEach((modelName) => {
+    if (db[modelName].associate) {
+      db[modelName].associate(db);
+    }
+  });
+}, 1000);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
