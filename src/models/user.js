@@ -9,9 +9,9 @@ export default (sequelize, DataTypes) => {
       // hide protected fields
       const attributes = { ...this.get() };
       // eslint-disable-next-line no-restricted-syntax
-      // for (const a of PROTECTED_ATTRIBUTES) {
-      //   delete attributes[a];
-      // }
+      for (const a of PROTECTED_ATTRIBUTES) {
+        delete attributes[a];
+      }
       return attributes;
     }
     /**
@@ -56,7 +56,14 @@ export default (sequelize, DataTypes) => {
           },
         },
       },
-      password: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        set(value) {
+          // Storing passwords in plaintext in the database is terrible.
+          // Hashing the value with an appropriate cryptographic hash function is better.
+          this.setDataValue('password', hash(value));
+        },
+      },
       is_active: DataTypes.BOOLEAN,
     },
     {

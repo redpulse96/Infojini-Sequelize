@@ -2,13 +2,12 @@
   "name": "infojini-sequelize",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node index.js",
     "start": "nodemon --exec babel-node index.js"
   },
-  "author": "",
+  "author": "Syed Redhan",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.12.10",

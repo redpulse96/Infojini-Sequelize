@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Get API Version from .env (or else assume 1.0)
+const PORT = process.env.PORT;
 const baseUrl = '/api/v1';
 
 // mount all routes on /api path
@@ -49,13 +50,14 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) =>
   res.status(err.status).json({
     // eslint-disable-line no-unused-vars
-    message: err.isPublic ? err.message : httpStatus[err.status],
-    stack: config.env === 'development' ? err.stack : {},
+    error: {
+      success: false,
+      message: err.isPublic ? err.message : httpStatus[err.status],
+      stack: ['production'].includes(config.env) ? {} : err.stack,
+    },
   })
 );
 
-const port = 8080;
-
-app.listen(port, () => {
-  console.log('App is now running at port ', port);
+app.listen(PORT, () => {
+  console.log('App is now running at port', PORT);
 });

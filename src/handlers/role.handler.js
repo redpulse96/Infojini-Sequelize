@@ -1,6 +1,8 @@
 import model from '../models/index.js';
 import APIError from '../apiError.js';
 
+const { Op } = sequelize;
+
 export default {
   async getRoleCount(req, res) {
     const filter = { order: [['createdAt', 'ASC']], attributes: ['role_id', 'name'] };
@@ -10,7 +12,7 @@ export default {
         console.dir(fetchRoleIds);
         const roleIds = fetchRoleIds.map((val) => val.role_id);
         const groupedRoles = await model.User.findAndCountAll({
-          where: { role_id: roleIds },
+          where: { role_id: { [Op.isIn]: roleIds } },
           group: 'role_id',
         });
         console.dir(groupedRoles);

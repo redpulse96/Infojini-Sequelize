@@ -34,7 +34,7 @@ export async function protect(req, res, next) {
     req.user = user.toJSON();
     next();
   } catch (error) {
-    return next(error);
+    return next(new APIError(error.message, error.statusCode || 401, true));
   }
 }
 
