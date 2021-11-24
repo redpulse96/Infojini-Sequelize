@@ -1,3 +1,4 @@
+import sequelize from 'sequelize';
 import model from '../models/index.js';
 import APIError from '../apiError.js';
 
